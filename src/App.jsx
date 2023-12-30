@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 function App() {
   const [length, setLength] = useState(8);
@@ -6,6 +6,12 @@ function App() {
   const [charAllowed, setCharAllowed] = useState(false);
   const [upperCase, setUpperCase] = useState(false);
   const [password, setPassword] = useState("");
+
+  const passwordRef = useRef(null);
+
+  const copyPassword = useCallback(() => {
+    window.navigator.clipboard.writeText(password);
+  }, [password]);
 
   const passwordGenerator = useCallback(() => {
     let pass = "";
@@ -46,8 +52,14 @@ function App() {
             placeholder={password}
             value={password}
             readOnly
+            ref={passwordRef}
           />
-          <button className="bg-blue-600 w-20 ml-2">Copy</button>
+          <button
+            className="bg-blue-600 w-20 ml-2 active:bg-black hover:bg-blue-400"
+            onClick={copyPassword}
+          >
+            Copy
+          </button>
         </div>
         <div className="flex text-sm gap-x-2">
           <div className="flex items-center gap-x-2">
